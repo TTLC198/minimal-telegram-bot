@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MinimalTelegramBot.Settings;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using File = System.IO.File;
 
 namespace MinimalTelegramBot.Results.TypedResults;
@@ -11,23 +12,27 @@ internal abstract class FileResult : IResult
     private readonly Uri? _uri;
     private readonly Stream? _fileStream;
 
+    protected readonly ParseMode ParseMode;
     protected readonly string? Caption;
 
-    protected FileResult(Stream fileStream, string? caption = null)
+    protected FileResult(Stream fileStream, string? caption = null, ParseMode parseMode = ParseMode.None)
     {
         _fileStream = fileStream;
+        ParseMode = parseMode;
         Caption = caption;
     }
 
-    protected FileResult(string filePath, string? caption = null)
+    protected FileResult(string filePath, string? caption = null, ParseMode parseMode = ParseMode.None)
     {
         _filePath = filePath;
+        ParseMode = parseMode;
         Caption = caption;
     }
 
-    protected FileResult(Uri uri, string? caption = null)
+    protected FileResult(Uri uri, string? caption = null, ParseMode parseMode = ParseMode.None)
     {
         _uri = uri;
+        ParseMode = parseMode;
         Caption = caption;
     }
 
