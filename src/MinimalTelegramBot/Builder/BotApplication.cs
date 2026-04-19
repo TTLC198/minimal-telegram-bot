@@ -122,7 +122,8 @@ public sealed class BotApplication : IBotApplicationBuilder, IHandlerDispatcher,
         ApplyPipelineConfiguration();
 
         var pipeline = _pipelineBuilder.Build();
-        var updateServer = new UpdateServer(_host.Services, pipeline);
+        var requestConfiguration = BuildRequestConfiguration();
+        var updateServer = new UpdateServer(_host.Services, pipeline, requestConfiguration);
         var isWebhook = _properties.ContainsKey("__WebhookEnabled");
 
         var dispatchFunc = isWebhook
@@ -145,6 +146,18 @@ public sealed class BotApplication : IBotApplicationBuilder, IHandlerDispatcher,
     void IDisposable.Dispose()
     {
         ((IDisposable)_host).Dispose();
+    }
+
+    private BotRequestConfiguration BuildRequestConfiguration()
+    {
+        var parseMode = ParseMode.None;
+
+        if (_properties.TryGetValue("__ParseMode", out var value) && value is ParseMode configured)
+        {
+            parseMode = configured;
+        }
+
+        return new BotRequestConfiguration(parseMode);
     }
 
     private Func<CancellationToken, Task> SetupApplicationForPolling(UpdateServer updateServer)

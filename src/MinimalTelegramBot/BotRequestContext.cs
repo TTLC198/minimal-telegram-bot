@@ -15,7 +15,11 @@ public sealed class BotRequestContext
 {
     private readonly List<IDisposable> _disposables;
 
-    internal BotRequestContext(IServiceProvider services, Update update, ITelegramBotClient client)
+    internal BotRequestContext(
+        IServiceProvider services,
+        Update update,
+        ITelegramBotClient client,
+        BotRequestConfiguration configuration)
     {
         Services = services;
         Update = update;
@@ -23,9 +27,7 @@ public sealed class BotRequestContext
         _disposables = [];
         UserLocale = Locale.Default;
         Data = new Dictionary<string, object?>();
-
-        var options = services.GetService<BotRequestOptions>();
-        DefaultParseMode = options?.ParseMode ?? ParseMode.None;
+        ParseMode = configuration.ParseMode;
 
         var messageText = update.Message?.Text;
         var callbackData = update.CallbackQuery?.Data;
@@ -77,7 +79,7 @@ public sealed class BotRequestContext
     /// <summary>
     /// todo: docs
     /// </summary>
-    public ParseMode DefaultParseMode { get; }
+    public ParseMode ParseMode { get; }
 
     /// <summary>
     ///     Gets the locale of the user associated with current bot request. Defaults to <see cref="Locale.Default"/> locale.

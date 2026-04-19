@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Json;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
@@ -97,7 +96,6 @@ public sealed class BotApplicationBuilder : IHostApplicationBuilder
 
     private static void AddDefaultServices(IServiceCollection services)
     {
-        services.AddScoped<BotRequestOptions>();
         services.AddSingleton<ITelegramBotClient>(s =>
         {
             var options = s.GetRequiredService<IOptions<TelegramBotClientOptions>>().Value;

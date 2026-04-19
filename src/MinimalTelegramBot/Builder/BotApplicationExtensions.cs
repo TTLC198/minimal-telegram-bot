@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
 using MinimalTelegramBot.Settings;
-using Telegram.Bot.Types.Enums;
 
 namespace MinimalTelegramBot.Builder;
 
@@ -70,22 +68,6 @@ public static class BotApplicationExtensions
     {
         ArgumentNullException.ThrowIfNull(app);
         app.Properties["__CallbackAutoAnsweringPipeAdded"] = true;
-        return app;
-    }
-
-    /// <summary>
-    ///     Configures the bot to automatically answer callback queries.
-    /// </summary>
-    /// <param name="app">The bot application builder.</param>
-    /// <param name="parseMode">Text parsing mode. See <a href="https://core.telegram.org/bots/api#formatting-options"/></param>
-    /// <returns>The current instance of <see cref="IBotApplicationBuilder"/>.</returns>
-    public static IBotApplicationBuilder UseParseMode(this IBotApplicationBuilder app, ParseMode parseMode)
-    {
-        ArgumentNullException.ThrowIfNull(app);
-
-        var options = app.Services.GetService<BotRequestOptions>();
-        options?.ParseMode = parseMode;
-
         return app;
     }
 }

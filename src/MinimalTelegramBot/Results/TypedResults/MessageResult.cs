@@ -25,7 +25,7 @@ internal sealed class MessageResult : IResult
     public Task ExecuteAsync(BotRequestContext context)
     {
         if (_parseMode == ParseMode.None)
-            _parseMode = context.DefaultParseMode;
+            _parseMode = context.ParseMode;
 
         if (_edit)
         {

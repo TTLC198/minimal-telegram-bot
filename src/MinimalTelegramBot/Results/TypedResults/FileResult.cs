@@ -39,7 +39,7 @@ internal abstract class FileResult : IResult
     public Task ExecuteAsync(BotRequestContext context)
     {
         if (ParseMode == ParseMode.None)
-            ParseMode = context.DefaultParseMode;
+            ParseMode = context.ParseMode;
 
         if (_uri is not null)
         {
