@@ -10,7 +10,7 @@ internal sealed class MessageResult : IResult
     private readonly bool _edit;
     private readonly string _message;
     private readonly bool _reply;
-    private readonly ParseMode _parseMode;
+    private ParseMode _parseMode;
     private readonly ReplyMarkup? _replyMarkup;
 
     public MessageResult(string message, ReplyMarkup? keyboard = null, ParseMode parseMode = ParseMode.None, bool reply = false, bool edit = false)
@@ -24,6 +24,9 @@ internal sealed class MessageResult : IResult
 
     public Task ExecuteAsync(BotRequestContext context)
     {
+        if (_parseMode == ParseMode.None)
+            _parseMode = context.DefaultParseMode;
+
         if (_edit)
         {
             return Edit(context);

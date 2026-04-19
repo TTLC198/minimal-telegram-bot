@@ -11,9 +11,9 @@ internal abstract class FileResult : IResult
     private readonly string? _filePath;
     private readonly Uri? _uri;
     private readonly Stream? _fileStream;
-
-    protected readonly ParseMode ParseMode;
     protected readonly string? Caption;
+
+    protected ParseMode ParseMode;
 
     protected FileResult(Stream fileStream, string? caption = null, ParseMode parseMode = ParseMode.None)
     {
@@ -38,6 +38,9 @@ internal abstract class FileResult : IResult
 
     public Task ExecuteAsync(BotRequestContext context)
     {
+        if (ParseMode == ParseMode.None)
+            ParseMode = context.DefaultParseMode;
+
         if (_uri is not null)
         {
             return SendFromUri(context);
