@@ -13,6 +13,7 @@ using MinimalTelegramBot.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using Http = Microsoft.AspNetCore.Http;
 
 namespace MinimalTelegramBot.Builder;
@@ -253,6 +254,17 @@ public sealed class BotApplication : IBotApplicationBuilder, IHandlerDispatcher,
                 webhookConfiguration.Options.SecretToken,
                 ct);
         };
+    }
+
+    /// <summary>
+    /// todo: docs
+    /// </summary>
+    /// <param name="parseMode"></param>
+    /// <returns></returns>
+    public IBotApplicationBuilder ApplyParseMode(ParseMode parseMode)
+    {
+        _properties["__ParseMode"] = parseMode;
+        return this;
     }
 
     private void ApplyPipelineConfiguration()

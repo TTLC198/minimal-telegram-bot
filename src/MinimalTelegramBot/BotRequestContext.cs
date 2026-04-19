@@ -1,7 +1,10 @@
+using Microsoft.Extensions.DependencyInjection;
 using MinimalTelegramBot.Extensions;
 using MinimalTelegramBot.Localization.Abstractions;
+using MinimalTelegramBot.Settings;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace MinimalTelegramBot;
 
@@ -20,6 +23,9 @@ public sealed class BotRequestContext
         _disposables = [];
         UserLocale = Locale.Default;
         Data = new Dictionary<string, object?>();
+
+        var options = services.GetService<BotRequestOptions>();
+        DefaultParseMode = options?.ParseMode ?? ParseMode.None;
 
         var messageText = update.Message?.Text;
         var callbackData = update.CallbackQuery?.Data;
@@ -67,6 +73,11 @@ public sealed class BotRequestContext
     ///     Gets a key/value collection that can be used to share data within the scope of this bot request.
     /// </summary>
     public IDictionary<string, object?> Data { get; }
+
+    /// <summary>
+    /// todo: docs
+    /// </summary>
+    public ParseMode DefaultParseMode { get; }
 
     /// <summary>
     ///     Gets the locale of the user associated with current bot request. Defaults to <see cref="Locale.Default"/> locale.
