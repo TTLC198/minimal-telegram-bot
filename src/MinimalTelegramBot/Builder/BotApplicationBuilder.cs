@@ -97,6 +97,7 @@ public sealed class BotApplicationBuilder : IHostApplicationBuilder
 
     private static void AddDefaultServices(IServiceCollection services)
     {
+        services.AddScoped<BotRequestOptions>();
         services.AddSingleton<ITelegramBotClient>(s =>
         {
             var options = s.GetRequiredService<IOptions<TelegramBotClientOptions>>().Value;

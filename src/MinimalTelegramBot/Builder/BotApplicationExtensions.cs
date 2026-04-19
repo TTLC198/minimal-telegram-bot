@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using MinimalTelegramBot.Settings;
 using Telegram.Bot.Types.Enums;
 
@@ -81,7 +82,10 @@ public static class BotApplicationExtensions
     public static IBotApplicationBuilder UseParseMode(this IBotApplicationBuilder app, ParseMode parseMode)
     {
         ArgumentNullException.ThrowIfNull(app);
-        app.Properties["__ParseMode"] = (int)parseMode;
+
+        var options = app.Services.GetService<BotRequestOptions>();
+        options?.ParseMode = parseMode;
+
         return app;
     }
 }
